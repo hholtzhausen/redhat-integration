@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema version="1.0" 
+           xmlns:ex="http://examples.org/party"
+           targetNamespace="http://examples.org/party"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+    <xs:complexType name="PartyType">
+      <xs:sequence>
+        <xs:element name="id" type="xs:string" minOccurs="0"/>
+        <xs:element name="firstName" type="xs:string" minOccurs="0"/>
+        <xs:element name="lastName" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="Party" type="ex:PartyType"/>
+
+    <xs:complexType name="PartyFileType">
+      <xs:sequence>
+        <xs:element ref="ex:Party" minOccurs="0"/>
+        <xs:element ref="ex:Status" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="PartyFile" type="ex:PartyFileType"/>
+
+    <xs:complexType name="StatusType">
+      <xs:sequence>
+        <xs:element name="code" type="xs:string" minOccurs="0"/>
+        <xs:element name="description" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="Status" type="ex:StatusType"/>
+</xs:schema>

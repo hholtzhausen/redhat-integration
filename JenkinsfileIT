@@ -1,0 +1,7 @@
+@Library('bitbuild-jenkins-pipeline-library')_
+
+bitbuildMavenIntegrationTestsPipeline {
+  build_agent = 'bitbuild-maven-oci'
+  mvn_settings = 'bitbuild-maven-settings'
+  api_credential = 'fitcamel-starter-api-credential'
+}

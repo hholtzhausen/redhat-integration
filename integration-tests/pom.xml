@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>integration-tests</artifactId>
+
+  <!-- building -->
+  <parent>
+    <groupId>org.acme</groupId>
+    <artifactId>fitcamel-party-demo-pom</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.acme</groupId>
+      <artifactId>party-metadata</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.bitbuild</groupId>
+      <artifactId>camel3-test-support</artifactId>
+      <version>${io.bitbuild.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <io.bitbuild.test.oidc.enabled>true</io.bitbuild.test.oidc.enabled>
+            <io.bitbuild.test.oidc.skiptls>true</io.bitbuild.test.oidc.skiptls>
+            <io.bitbuild.test.oidc.skiphostverify>false</io.bitbuild.test.oidc.skiphostverify>
+            <io.bitbuild.test.oidc.token.endpoint>${oidc-token-url}</io.bitbuild.test.oidc.token.endpoint>
+            <io.bitbuild.test.oidc.clientid>${oidc-clientid}</io.bitbuild.test.oidc.clientid>
+            <io.bitbuild.test.oidc.clientsecret>${oidc-clientsecret}</io.bitbuild.test.oidc.clientsecret>
+<!--
+            <io.bitbuild.test.oidc.granttype>client_credentials</io.bitbuild.test.oidc.granttype>
+            <io.bitbuild.test.oidc.token.key>access_token</io.bitbuild.test.oidc.token.key>
+-->
+            <io.bitbuild.test.restassured.baseuri>https://party-api-middleware.apps-crc.testing</io.bitbuild.test.restassured.baseuri>
+            <io.bitbuild.test.restassured.port>443</io.bitbuild.test.restassured.port>
+            <io.bitbuild.test.restassured.basepath>${api-path}</io.bitbuild.test.restassured.basepath>
+            <io.bitbuild.test.restassured.skiptls>true</io.bitbuild.test.restassured.skiptls>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

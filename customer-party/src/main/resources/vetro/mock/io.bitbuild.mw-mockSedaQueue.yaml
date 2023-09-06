@@ -1,0 +1,28 @@
+name: MockSedaQueue
+
+pipeline:
+  fromUri: seda:mockQueue
+  validateUri: devnull:vetrostep1
+  enrichUri: devnull:vetrostep2
+  xformUri: xslt:xsl/partyToStatus.xsl
+  routingUri: devnull:vetrostep3
+  operateUri: devnull:vetrostep4
+  response:
+    xformUri: devnull:vetrostep5
+    routingUri: devnull:vetrostep6
+    operateUri: devnull:vetrostep7
+
+headers:
+  - name: custom
+    value: customValue
+  - name: custom1
+    value: customValue1
+
+exchange:
+  - name: property1
+    value: value1
+  - name: property2
+    value: value2
+
+#control:
+#  auditLoggingLevel: DEBUG

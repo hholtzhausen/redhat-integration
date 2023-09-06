@@ -1,0 +1,17 @@
+name: CustomerAPI
+
+syncPipeline:
+  request:
+    fromUri: seda:customerAPI
+    validateUri: dataformat:jaxb:marshal?contextPath=org.examples.party,validator:xsd/party.xsd
+    enrichUri: direct:myEnricher
+    xformUri: devnull:vetrostep1
+    routingUri: devnull:vetrostep2
+    operateUri: seda:mockQueue?waitForTaskToComplete=Always
+  response:
+    validateUri: validator:xsd/party.xsd
+    enrichUri: devnull:vetrostep3 
+    xformUri: dataformat:jaxb:unmarshal?contextPath=org.examples.party
+  exception:
+    xformUri: dataformat:jaxb:unmarshal?contextPath=org.examples.party
+

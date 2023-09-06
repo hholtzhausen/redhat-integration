@@ -1,0 +1,14 @@
+name: CustomerProxy
+
+proxy:
+  implementation: servlet
+  context: /customer
+  targetURL: "{{app.customer.host}}/customer"
+  enableSSL: false
+  isPrivate: "{{app.private.proxy}}"
+  privateHeader: "{{app.private.header}}"
+  privateToken: "{{app.private.token}}"
+
+headers:
+  - name: custom
+    value: hello

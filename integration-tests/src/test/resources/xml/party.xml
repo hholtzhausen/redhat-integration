@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tem:Person>
+         <tem:id>x</tem:id>
+         <tem:givenName>Piet1</tem:givenName>
+         <tem:surname>Pomies</tem:surname>
+      </tem:Person>
+   </soapenv:Body>
+</soapenv:Envelope>

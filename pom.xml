@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.acme</groupId>
+  <artifactId>fitcamel-party-demo-pom</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <!--test-->
+  <!--oidc-->
+  <parent>
+    <groupId>io.bitbuild.poms</groupId>
+    <artifactId>camel3-build-parent</artifactId>
+<!--
+    <version>0.2.16-SNAPSHOT</version>
+-->
+    <version>0.2.13-8-RH-SNAPSHOT</version>
+  </parent>
+
+  <distributionManagement>
+    <repository>
+      <id>releases-local</id>
+      <url>${localReleaseURL}</url>
+    </repository>
+
+    <snapshotRepository>
+      <id>snapshots-local</id>
+      <url>${localSnapshotURL}</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+
+  <properties>
+   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+   <docker-file-tmpl>docker/Dockerfile.quarkus-app</docker-file-tmpl>
+   <docker-file>target/classes/${docker-file-tmpl}</docker-file>
+   <io.bitbuild.version>0.2.13-8-RH-SNAPSHOT</io.bitbuild.version>
+<!--
+   <io.bitbuild.version>0.2.16-SNAPSHOT</io.bitbuild.version>
+-->
+
+   <api-path>/party</api-path>
+   <oidc-realm-url>https://keycloak-sso-system.apps-crc.testing/auth/realms/middleware</oidc-realm-url>
+   <oidc-authorisation-url>${oidc-realm-url}/protocol/openid-connect/auth</oidc-authorisation-url>
+   <oidc-token-url>${oidc-realm-url}/protocol/openid-connect/token</oidc-token-url>
+   <base-image>image-registry.openshift-image-registry.svc:5000/bitbuild/bitbuild-run-java:1.3</base-image>
+<!--
+   <base-image>registry.9thbit.dev/bitbuild/bitbuild-run-java:1.3</base-image>
+-->
+    <bitbuild-openapi-examples-json>file://${project.basedir}/../party-metadata/src/main/resources/META-INF/examples/json</bitbuild-openapi-examples-json>
+  </properties>
+
+   <modules>
+     <module>party-metadata</module>
+     <module>customer-party</module>
+     <module>person-party</module>
+     <module>person-ws</module>
+     <module>party-api</module>
+   </modules>
+
+   <dependencies>
+     <dependency>
+      <groupId>org.apache.camel.quarkus</groupId>
+      <artifactId>camel-quarkus-microprofile-health</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel.quarkus</groupId>
+      <artifactId>camel-quarkus-micrometer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-micrometer-registry-prometheus</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-logging-gelf</artifactId>
+    </dependency>
+   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+       <groupId>org.codehaus.mojo</groupId>
+       <artifactId>exec-maven-plugin</artifactId>
+       <inherited>false</inherited>
+       <configuration>
+         <skip>true</skip>
+       </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+   <profile>
+      <id>prod</id>
+      <properties>
+        <container-registry>docker://image-registry.openshift-image-registry.svc:5000/middleware</container-registry>
+      </properties>
+   </profile>
+   <profile>
+      <id>dr</id>
+      <properties>
+        <container-registry>docker://image-registry.openshift-image-registry.svc:5000/middleware</container-registry>
+      </properties>
+   </profile>
+   <profile>
+      <id>test</id>
+      <properties>
+        <container-registry>docker://image-registry.openshift-image-registry.svc:5000/middleware</container-registry>
+<!--
+        <container-registry>docker://registry.9thbit.dev/middleware</container-registry>
+-->
+      </properties>
+   </profile>
+   <profile>
+     <id>integration-tests</id>
+     <modules>
+       <module>integration-tests</module>
+     </modules>
+   </profile>
+  </profiles>
+</project>
